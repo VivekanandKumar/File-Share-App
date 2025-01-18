@@ -23,7 +23,7 @@ export default {
     downloadFile: async (req, res) => {
         try {
             const id = req.params.id;
-            const FileDetails = await File.findOne({ uuid: id }, "fileName originalFilename fileSize mimeType");
+            const FileDetails = await File.findOne({ deleted: false, uuid: id }, "fileName originalFilename fileSize mimeType");
             if (!FileDetails) throw new Error("File not Found");
             const FileUrl = "uploads/" + FileDetails.fileName;
 
@@ -38,9 +38,10 @@ export default {
             stream.on("error", (err) => {
                 throw new Error(err.message);
             });
-            stream.on("close", () => {
+            stream.on("close", async () => {
                 console.log("File Downloaded");
                 fs.unlinkSync(FileUrl);
+                await File.findByIdAndUpdate(FileDetails._id, { $set: { deleted: true } });
             });
             stream.on("data", (e) => {
                 // res.send(e.length / 1024)

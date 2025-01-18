@@ -7,6 +7,10 @@ const FileSchema = new Schema(
         fileSize: Number,
         mimeType: String,
         uuid: String,
+        deleted: {
+            type: Boolean,
+            default: false,
+        },
     },
     { timestamps: true }
 );
