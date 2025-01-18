@@ -2,7 +2,6 @@ import express from "express";
 import Logger from "./Utils/Logger.js";
 import HealthRouter from "./Routes/health.js";
 import FilesRouter from "./Routes/Files.js";
-import DownloadFilesRouter from "./Routes/DownloadFiles.js";
 import connectDb from './Utils/connection.js'
 const app = express();
 
@@ -14,7 +13,6 @@ app.use(Logger);
 // Routes
 app.use("/api/health", HealthRouter);
 app.use("/api/files", FilesRouter);
-app.use("/files", DownloadFilesRouter);
 
 const PORT = process.env.PORT || 8080;
 
